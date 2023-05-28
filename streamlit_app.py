@@ -35,7 +35,7 @@ model = LogisticRegression(max_iter=200)
 model.fit(X_train, y_train)
 
 # Compute SHAP values
-explainer = shap.TreeExplainer(model)
+explainer = shap.LinearExplainer(model)
 shap_values = explainer.shap_values(X)
 
 st.title('Diabetes Prediction App')
