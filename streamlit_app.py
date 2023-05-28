@@ -76,11 +76,15 @@ if st.button('Predict'):
         st.write('The patient is not predicted to have diabetes.')
     else:
         st.write('The patient is predicted to have diabetes.')
+
     st.write('The predicted probability is ', prediction_proba)
 
-    if st.button("Explain Yourself"):
+    display_feature_importance(model)
+
+
+    #if st.button("Explain Yourself!"):
         # Calculate and display feature importance
-        display_feature_importance(model)
+    #    display_feature_importance(model)
 
     #if st.button('Explain yourself!'):
     #    # Display local SHAP values
