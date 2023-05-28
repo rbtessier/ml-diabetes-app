@@ -6,6 +6,19 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 #import shap
 
+def display_feature_importance(model):
+        # Get feature importances (absolute values of coefficients)
+        importances = np.abs(model.coef_[0])
+
+        # Associate importances with feature names
+        feature_importance = pd.DataFrame({'Feature': X.columns, 'Importance': importances})
+
+        # Sort features by importance in descending order
+        feature_importance = feature_importance.sort_values('Importance', ascending=False)
+
+        # Display the feature importances
+        st.dataframe(feature_importance)
+
 
 # Load the diabetes dataset
 # Replace the path with the path where your diabetes.csv file is
@@ -57,6 +70,7 @@ if st.button('Predict'):
     prediction = model.predict(input_data)
     prediction_proba = model.predict_proba(input_data)
 
+    
 
     if prediction[0] == 0:
         st.write('The patient is not predicted to have diabetes.')
@@ -64,6 +78,9 @@ if st.button('Predict'):
         st.write('The patient is predicted to have diabetes.')
     st.write('The predicted probability is ', prediction_proba)
 
+    if st.button("Explain Yourself"):
+        # Calculate and display feature importance
+        display_feature_importance(model)
 
     #if st.button('Explain yourself!'):
     #    # Display local SHAP values
