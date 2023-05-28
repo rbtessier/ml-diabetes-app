@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 import numpy as np
-import shap
+#import shap
 
 def display_feature_importance(model):
         # Get feature importances (absolute values of coefficients)
@@ -35,8 +35,8 @@ model = LogisticRegression(max_iter=200)
 model.fit(X_train, y_train)
 
 # Compute SHAP values
-explainer = shap.LinearExplainer(model, X_train)
-shap_values = explainer.shap_values(X)
+#explainer = shap.LinearExplainer(model, X_train)
+#shap_values = explainer.shap_values(X)
 
 st.title('Diabetes Prediction App')
 
@@ -86,14 +86,14 @@ if st.button('Predict'):
         # Calculate and display feature importance
     #    display_feature_importance(model)
 
-    if st.button('Explain yourself!'):
-        # Display local SHAP values
-        shap_force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1], input_data, matplotlib = False)
+    #if st.button('Explain yourself!'):
+    #    # Display local SHAP values
+    #    shap_force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1], input_data, matplotlib = False)#
 
-        st.plotly_chart(shap_force_plot)
+    #    st.plotly_chart(shap_force_plot)
 
         # Display global feature importance
-        shap.summary_plot(shap_values, features, plot_type="bar")
+#        shap.summary_plot(shap_values, features, plot_type="bar")
 
     #    # Display global feature importance
     #    fig, ax = plt.subplots()
