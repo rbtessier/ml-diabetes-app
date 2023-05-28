@@ -4,6 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 import numpy as np
+#import shap
+
 
 # Load the diabetes dataset
 # Replace the path with the path where your diabetes.csv file is
@@ -19,12 +21,27 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 model = LogisticRegression(max_iter=200)
 model.fit(X_train, y_train)
 
-# Create Streamlit app
+# Compute SHAP values
+#explainer = shap.TreeExplainer(model)
+#shap_values = explainer.shap_values(X)
+
 st.title('Diabetes Prediction App')
 
 st.write("""
-Enter patient health parameters to predict if the patient has diabetes.
+This app predicts whether a patient has diabetes based on specific health factors. The features used for the prediction are:
+
+- Pregnancies: Number of times pregnant.
+- PlasmaGlucose: Plasma glucose concentration a 2 hours in an oral glucose tolerance test.
+- DiastolicBloodPressure: Diastolic blood pressure (mm Hg).
+- TricepsThickness: Triceps skin fold thickness (mm).
+- SerumInsulin: 2-Hour serum insulin (mu U/ml).
+- BMI: Body mass index (weight in kg/(height in m)^2).
+- DiabetesPedigree: Diabetes pedigree function.
+- Age: Age (years).
+
+After the prediction, you can ask the model to explain its prediction by clicking the 'Explain yourself!' button. The model will show which features contributed more to the prediction (local feature importance) and how each feature typically affects predictions (global feature importance).
 """)
+
 
 # Input sliders
 pregnancies = st.slider('Pregnancies', min_value=0, max_value=10, value=5)
@@ -38,8 +55,21 @@ bmi = st.slider('BMI', min_value=0.0, max_value=60.0, value=30.0, step=0.1)
 if st.button('Predict'):
     input_data = np.array([[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi]])
     prediction = model.predict(input_data)
+    prediction_proba = model.predict_proba(input_data)
+
 
     if prediction[0] == 0:
         st.write('The patient is not predicted to have diabetes.')
     else:
         st.write('The patient is predicted to have diabetes.')
+    st.write('The predicted probability is ', prediction_proba)
+
+
+    #if st.button('Explain yourself!'):
+    #    # Display local SHAP values
+    #    st_shap(shap.force_plot(explainer.expected_value[1], shap_values[1], input_df))
+
+    #    # Display global feature importance
+    #    fig, ax = plt.subplots()
+    #    shap.summary_plot(shap_values[1], X, plot_type="bar", show=False)
+    #    st.pyplot(fig)
